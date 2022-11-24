@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["assets/*/index", "assets/*"],
+      "@components/*": ["src/components/*/index", "src/components/*"],
+      "@navigators/*": ["src/navigators/*/index", "src/navigators/*"],
+      "@screens/*": ["src/screens/*/index", "src/screens/*"],
+      "@typedef/*": ["src/typedef/*/index", "src/typedef/*"],
+      "@helpers/*": ["src/helpers/*/index", "src/helpers/*"]
+    }
+  },
+  "extends": "expo/tsconfig.base"
+}
