@@ -7,6 +7,8 @@ import {
   TextInput,
   Text,
   Pressable,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
 import styles from "./homeStyles";
 
@@ -18,8 +20,19 @@ import Banner from "@assets/SpaceTours.png";
 import RocketIcon from "@assets/rocket-icon.png";
 import FilterIcon from "@assets/filter-icon.png";
 import ArrowDownIcon from "@assets/arrow-down-icon.png";
+import { useQuery } from "@apollo/client";
+import { GET_PAST_LAUNCHES } from "@helpers/queries";
 
 const Home = () => {
+  const { loading, data, fetchMore } = useQuery(GET_PAST_LAUNCHES, {
+    variables: {
+      limit: 10,
+      offset: 0,
+      order: "asc",
+      sort: "mission_name",
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.Blue} barStyle="light-content" />
@@ -55,7 +68,26 @@ const Home = () => {
           <View style={styles.separator} />
         </View>
 
-        <View style={styles.contentList}></View>
+        <View style={styles.contentListWrapper}>
+          <FlatList
+            style={styles.list}
+            data={data?.launchesPastResult?.data || []}
+            renderItem={(info) => (
+              <View style={styles.listItem}>
+                <Text style={styles.listItemText}>
+                  {info.item.mission_name}
+                </Text>
+              </View>
+            )}
+          />
+        </View>
+        {loading && (
+          <ActivityIndicator
+            style={{ flex: 2 }}
+            color={Colors.Blue}
+            size="large"
+          />
+        )}
       </View>
 
       <Image source={Rocket} style={styles.headerRocket} />

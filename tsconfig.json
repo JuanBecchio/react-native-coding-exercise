@@ -4,7 +4,6 @@
     "noEmit": true,
     "isolatedModules": true,
     "strict": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "rootDir": ".",
     "baseUrl": "./",

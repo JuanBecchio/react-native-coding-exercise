@@ -130,9 +130,27 @@ export default StyleSheet.create({
     width: 16,
     height: 16,
   },
-  contentList: {
-    backgroundColor: "red",
+  contentListWrapper: {
     flex: 5,
+  },
+  list: {
+    width: windowDimensions.width,
+    flexGrow: 0,
+    height: "90%",
+  },
+  listItem: {
+    width: "70%",
+    alignItems: "center",
+    backgroundColor: Colors.WhiteMilk,
+    marginHorizontal: "15%",
+    marginVertical: 5,
+    padding: 20,
+    paddingVertical: 40,
+    borderRadius: 20,
+  },
+  listItemText: {
+    color: Colors.Gray,
+    fontSize: 18,
   },
   separator: {
     height: 6,
