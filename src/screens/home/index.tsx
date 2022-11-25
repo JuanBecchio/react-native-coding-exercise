@@ -1,4 +1,4 @@
-import Colors from "@helpers/colors";
+import { Fragment, useCallback, useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -6,10 +6,18 @@ import {
   View,
   TextInput,
   Text,
-  Pressable,
   FlatList,
   ActivityIndicator,
+  ListRenderItemInfo,
 } from "react-native";
+import { useQuery } from "@apollo/client";
+
+import Colors from "@helpers/colors";
+import { GET_PAST_LAUNCHES } from "@helpers/queries";
+
+import ListItem from "@components/ListItem";
+import Button from "@components/Button";
+
 import styles from "./homeStyles";
 
 import Planet from "@assets/Planet.png";
@@ -17,21 +25,59 @@ import Logo from "@assets/YouNeedMoreMars.png";
 import Rocket from "@assets/Rocket.png";
 import Banner from "@assets/SpaceTours.png";
 
-import RocketIcon from "@assets/rocket-icon.png";
-import FilterIcon from "@assets/filter-icon.png";
-import ArrowDownIcon from "@assets/arrow-down-icon.png";
-import { useQuery } from "@apollo/client";
-import { GET_PAST_LAUNCHES } from "@helpers/queries";
+import RocketIcon from "@components/icons/RocketIcon";
+import ArrowDownIcon from "@components/icons/ArrowDownIcon";
+import FilterIcon from "@components/icons/FilterIcon";
+import ChevronRightCircleIcon from "@components/icons/ChevronRightCircleIcon";
 
 const Home = () => {
   const { loading, data, fetchMore } = useQuery(GET_PAST_LAUNCHES, {
     variables: {
-      limit: 10,
+      limit: 5,
       offset: 0,
       order: "asc",
       sort: "mission_name",
     },
   });
+
+  const [selectedItem, setSelectedItem] = useState();
+
+  const renderItem = useCallback(
+    (info: ListRenderItemInfo<any>) => {
+      const isSelected = selectedItem === info.item.id;
+      return (
+        <Fragment>
+          <ListItem
+            text={info.item.mission_name}
+            style={[
+              styles.listItem,
+              isSelected
+                ? { backgroundColor: Colors.Red }
+                : { backgroundColor: Colors.WhiteMilk },
+            ]}
+            textStyle={[
+              styles.listItemText,
+              isSelected ? { color: Colors.White } : { color: Colors.Gray },
+            ]}
+            onPress={() => setSelectedItem(info.item.id)}
+          />
+          {isSelected && (
+            <ChevronRightCircleIcon
+              color={Colors.Red}
+              style={styles.listItemIcon}
+            />
+          )}
+        </Fragment>
+      );
+    },
+    [selectedItem]
+  );
+
+  // <ActivityIndicator
+  //           style={{ flex: 2 }}
+  //           color={Colors.Blue}
+  //           size="large"
+  //         />
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,46 +94,36 @@ const Home = () => {
 
         <View style={styles.containerListPanel}>
           <View style={styles.contentSearchContainer}>
-            <Image source={RocketIcon} style={styles.rocketIcon} />
+            <RocketIcon color={Colors.WhiteMilk} style={styles.rocketIcon} />
             <TextInput
               placeholder="Search for flights"
               placeholderTextColor={Colors.WhiteMilk}
               style={styles.searchInput}
             />
-            <Pressable style={styles.button}>
-              <Text style={styles.buttonText}>Search</Text>
-            </Pressable>
+            <Button text="Search" style={styles.button} />
           </View>
+
           <View style={styles.searchFilters}>
-            <Image source={FilterIcon} style={styles.filterIcon} />
+            <FilterIcon style={styles.filterIcon} color={Colors.Blue} />
             <View style={styles.filterType}>
               <Text style={styles.filterText}>Mission Name</Text>
-              <Image source={ArrowDownIcon} style={styles.sortIcon} />
+              <ArrowDownIcon
+                style={styles.sortIcon}
+                color={Colors.Blue}
+                width={16}
+                height={14}
+              />
             </View>
           </View>
           <View style={styles.separator} />
         </View>
 
-        <View style={styles.contentListWrapper}>
-          <FlatList
-            style={styles.list}
-            data={data?.launchesPastResult?.data || []}
-            renderItem={(info) => (
-              <View style={styles.listItem}>
-                <Text style={styles.listItemText}>
-                  {info.item.mission_name}
-                </Text>
-              </View>
-            )}
-          />
-        </View>
-        {loading && (
-          <ActivityIndicator
-            style={{ flex: 2 }}
-            color={Colors.Blue}
-            size="large"
-          />
-        )}
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
+          data={data?.launchesPastResult?.data || []}
+          renderItem={renderItem}
+        />
       </View>
 
       <Image source={Rocket} style={styles.headerRocket} />
