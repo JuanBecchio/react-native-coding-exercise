@@ -5,20 +5,21 @@ import {
   ViewStyle,
   TextStyle,
   Pressable,
+  PressableProps,
 } from "react-native";
 
 type ListItemProps = {
   text: string;
-  style?: ViewStyle | ViewStyle[];
   textStyle?: TextStyle | TextStyle[];
-  onPress?: () => void;
-};
+  style?: ViewStyle;
+} & PressableProps;
 
 const ListItem: React.FC<ListItemProps> = ({
   text,
   style,
   textStyle,
   onPress,
+  ...props
 }) => {
   return (
     <Pressable
@@ -28,6 +29,7 @@ const ListItem: React.FC<ListItemProps> = ({
         { opacity: pressed ? 0.6 : 1 },
       ]}
       onPress={onPress}
+      {...props}
     >
       <Text style={[styles.listItemText, textStyle]}>{text}</Text>
     </Pressable>

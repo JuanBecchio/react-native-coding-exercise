@@ -5,22 +5,32 @@ import {
   StyleSheet,
   ViewStyle,
   TextStyle,
+  PressableProps,
 } from "react-native";
 
-type ButtonProps = {
+export type ButtonProps = {
   text: string;
   style?: ViewStyle;
   textStyle?: TextStyle;
-};
+  onPress?: () => void;
+} & PressableProps;
 
-const Button: React.FC<ButtonProps> = ({ text, style, textStyle }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  style,
+  textStyle,
+  onPress,
+  ...props
+}) => {
   return (
     <Pressable
+      onPress={onPress}
       style={({ pressed }) => [
         styles.button,
         style,
         { opacity: pressed ? 0.6 : 1 },
       ]}
+      {...props}
     >
       <Text style={[styles.buttonText, textStyle]}>{text}</Text>
     </Pressable>

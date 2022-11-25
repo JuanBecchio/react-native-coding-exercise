@@ -5,7 +5,17 @@ import { API_URL } from "@env";
 
 const client = new ApolloClient({
   uri: API_URL,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          launchesPastResult: {
+            keyArgs: false,
+          },
+        },
+      },
+    },
+  }),
 });
 
 export default function App() {

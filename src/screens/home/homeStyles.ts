@@ -5,7 +5,8 @@ const windowDimensions = Dimensions.get("window");
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
+    height: windowDimensions.height,
+    width: windowDimensions.width,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -110,28 +111,35 @@ export default StyleSheet.create({
     flexBasis: "10%",
     marginLeft: 20,
   },
-  list: {
-    flexBasis: "75%",
-  },
-  listContent: {
-    width: windowDimensions.width,
-    paddingVertical: 15,
-    marginBottom: 5,
-  },
-  listItem: {
-    width: "60%",
-    alignSelf: "center",
-    paddingVertical: 24,
-    borderRadius: 15,
-  },
-  listItemText: {
-    fontSize: 14,
-    textAlign: "center",
-  },
-  listItemIcon: {
+  sortPickerBackDrop: {
+    backgroundColor: "transparent",
     position: "absolute",
-    right: "8%",
-    top: "30%",
+    width: windowDimensions.width,
+    height: windowDimensions.height,
+    transform: [{ translateY: 100 }],
+    zIndex: 2,
+  },
+  sortPicker: {
+    position: "absolute",
+    width: "75%",
+    backgroundColor: Colors.Blue,
+    alignItems: "center",
+
+    top: "100%",
+    left: 0,
+    zIndex: 10,
+  },
+  sortPickerItem: {
+    width: "85%",
+    borderRadius: 10,
+    paddingVertical: 15,
+    marginVertical: 15,
+  },
+  sortPickerItemText: {
+    fontWeight: "bold",
+    color: Colors.Blue,
+    textTransform: "uppercase",
+    fontSize: 17,
   },
   separator: {
     height: 6,
