@@ -1,13 +1,11 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import {
-  SafeAreaView,
   StatusBar,
   Image,
   View,
   TextInput,
   Text,
   Pressable,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { GET_PAST_LAUNCHES } from "@helpers/queries";
 import { useQuery } from "@apollo/client";
@@ -40,6 +38,7 @@ const Home = () => {
     asc: true,
     sort: "launch_year",
   });
+  const missionSearchRef = useRef<string>("");
   const [showSortList, setShowSortList] = useState(false);
 
   const { loading, data, fetchMore, refetch, client } =
@@ -49,6 +48,7 @@ const Home = () => {
         offset: 0,
         order: "asc",
         sort: "launch_year",
+        mission_search: "",
       },
       notifyOnNetworkStatusChange: true,
     });
@@ -78,12 +78,13 @@ const Home = () => {
     refetch({
       order: newFilters.asc ? "asc" : "desc",
       sort: newFilters.sort,
+      mission_search: missionSearchRef.current,
     });
     setFilters({ ...newFilters });
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar backgroundColor={Colors.Blue} barStyle="light-content" />
 
       <View style={styles.header}>
@@ -102,8 +103,13 @@ const Home = () => {
               placeholder="Search for flights"
               placeholderTextColor={Colors.WhiteMilk}
               style={styles.searchInput}
+              onChangeText={(text) => (missionSearchRef.current = text)}
             />
-            <Button text="Search" style={styles.button} />
+            <Button
+              text="Search"
+              style={styles.button}
+              onPress={() => handleFilterChange({ ...filters })}
+            />
           </View>
 
           <View style={styles.searchFilters}>
@@ -181,7 +187,7 @@ const Home = () => {
       </View>
 
       <Image source={Rocket} style={styles.headerRocket} />
-    </SafeAreaView>
+    </View>
   );
 };
 

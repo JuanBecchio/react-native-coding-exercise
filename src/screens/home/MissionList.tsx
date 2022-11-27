@@ -7,11 +7,13 @@ import {
   Dimensions,
   FlatList,
   ListRenderItemInfo,
+  Pressable,
   StyleSheet,
   View,
 } from "react-native";
 import Colors from "@helpers/colors";
 import { LaunchesPastResult, LaunchType } from "@components/typedef/LaunchType";
+import { useNavigation } from "@react-navigation/native";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -28,6 +30,7 @@ const MissionsList: React.FC<MissionListProps> = ({
 }) => {
   const [selectedItem, setSelectedItem] = useState<string>();
   const [canFetchMore, setCanFetchMore] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     setCanFetchMore(
@@ -61,10 +64,12 @@ const MissionsList: React.FC<MissionListProps> = ({
               onPress={() => setSelectedItem(info.item.id)}
             />
             {isSelected && (
-              <ChevronRightCircleIcon
-                color={Colors.Red}
+              <Pressable
                 style={styles.listItemIcon}
-              />
+                onPress={() => navigation.navigate("Ticket")}
+              >
+                <ChevronRightCircleIcon color={Colors.Red} />
+              </Pressable>
             )}
           </View>
           {isLastIndex && canFetchMore && (
@@ -98,7 +103,7 @@ const MissionsList: React.FC<MissionListProps> = ({
 
 const styles = StyleSheet.create({
   list: {
-    flexBasis: "72%",
+    flexBasis: "75%",
     flexGrow: 0,
   },
   listContent: {
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
   listItemIcon: {
     position: "absolute",
     right: "8%",
-    top: "30%",
+    top: "32%",
   },
 });
 

@@ -11,7 +11,7 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   header: {
-    flexBasis: "17%",
+    flexBasis: "16%",
     width: "100%",
     backgroundColor: Colors.Blue,
     flexDirection: "row",
@@ -45,7 +45,7 @@ export default StyleSheet.create({
     zIndex: 2,
   },
   content: {
-    flexBasis: "83%",
+    flexBasis: "84%",
     width: "100%",
     backgroundColor: Colors.OrangeSand,
     alignItems: "center",

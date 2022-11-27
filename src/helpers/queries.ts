@@ -6,12 +6,14 @@ export const GET_PAST_LAUNCHES = gql`
     $limit: Int
     $sort: String
     $order: String
+    $mission_search: String
   ) {
     launchesPastResult(
       offset: $offset
       limit: $limit
       sort: $sort
       order: $order
+      find: { mission_name: $mission_search }
     ) {
       result {
         totalCount
