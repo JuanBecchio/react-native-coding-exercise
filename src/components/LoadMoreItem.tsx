@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   textStyle: {
-    flex: 1.25,
+    flex: 1,
     fontWeight: "bold",
     marginLeft: 14,
     marginRight: 5,
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 1.5,
+    paddingHorizontal: 0,
     paddingVertical: 7,
   },
 });

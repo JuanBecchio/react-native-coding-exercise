@@ -7,36 +7,27 @@ import Colors from "@helpers/colors";
 
 import Home from "@screens/home";
 import Ticket from "@screens/ticket";
+import { Routes } from "@components/typedef/Routes";
 
 const client = new ApolloClient({
   uri: API_URL,
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          launchesPastResult: {
-            keyArgs: false,
-          },
-        },
-      },
-    },
-  }),
+  cache: new InMemoryCache(),
 });
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<Routes>();
 
 export default function App() {
   return (
-    <ApolloProvider client={client}>
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ApolloProvider client={client}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Ticket" component={Ticket} />
           </Stack.Navigator>
         </NavigationContainer>
-      </SafeAreaView>
-    </ApolloProvider>
+      </ApolloProvider>
+    </SafeAreaView>
   );
 }
 

@@ -5,10 +5,8 @@ const windowDimensions = Dimensions.get("window");
 
 export default StyleSheet.create({
   container: {
-    height: windowDimensions.height,
-    width: windowDimensions.width,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   header: {
     flexBasis: "16%",

@@ -13,7 +13,8 @@ import {
 } from "react-native";
 import Colors from "@helpers/colors";
 import { LaunchesPastResult, LaunchType } from "@components/typedef/LaunchType";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { Routes } from "@components/typedef/Routes";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -30,7 +31,7 @@ const MissionsList: React.FC<MissionListProps> = ({
 }) => {
   const [selectedItem, setSelectedItem] = useState<string>();
   const [canFetchMore, setCanFetchMore] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<Routes>>();
 
   useEffect(() => {
     setCanFetchMore(
@@ -66,7 +67,9 @@ const MissionsList: React.FC<MissionListProps> = ({
             {isSelected && (
               <Pressable
                 style={styles.listItemIcon}
-                onPress={() => navigation.navigate("Ticket")}
+                onPress={() =>
+                  navigation.navigate("Ticket", { launch_id: info.item.id })
+                }
               >
                 <ChevronRightCircleIcon color={Colors.Red} />
               </Pressable>
