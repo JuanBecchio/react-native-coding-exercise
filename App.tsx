@@ -1,15 +1,14 @@
+import { Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { SafeAreaView, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { API_URL } from "@env";
 
 import { Routes } from "@typedef/Routes";
 
-import Colors from "@helpers/colors";
-
 import Home from "@screens/home";
 import Ticket from "@screens/ticket";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const client = new ApolloClient({
   uri: API_URL,
@@ -18,9 +17,13 @@ const client = new ApolloClient({
 
 const Stack = createNativeStackNavigator<Routes>();
 
+const windowDimensions = Dimensions.get("window");
+
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{ width: windowDimensions.width, height: windowDimensions.height }}
+    >
       <ApolloProvider client={client}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -32,10 +35,3 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.WhiteMilk,
-  },
-});

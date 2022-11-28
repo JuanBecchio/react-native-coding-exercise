@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
   missionNameText: {
-    fontSize: 20,
+    fontSize: 18,
     color: Colors.OrangeSand,
   },
   rocketInfo: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 10,
     justifyContent: "space-between",
   },
   rocketInfoText: {
