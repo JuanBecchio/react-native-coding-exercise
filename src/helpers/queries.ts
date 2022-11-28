@@ -27,7 +27,7 @@ export const GET_PAST_LAUNCHES = gql`
 `;
 
 export const GET_LAUNCH = gql`
-  query GetLaunch($id: Int) {
+  query GetLaunch($id: ID!) {
     launch(id: $id) {
       id
       mission_name

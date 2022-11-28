@@ -1,13 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet } from "react-native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { API_URL } from "@env";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import { Routes } from "@typedef/Routes";
+
 import Colors from "@helpers/colors";
 
 import Home from "@screens/home";
 import Ticket from "@screens/ticket";
-import { Routes } from "@components/typedef/Routes";
 
 const client = new ApolloClient({
   uri: API_URL,

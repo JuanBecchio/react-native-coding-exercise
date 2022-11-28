@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ViewStyle,
 } from "react-native";
+
 import Colors from "@helpers/colors";
 import Button, { ButtonProps } from "./Button";
 

@@ -1,6 +1,3 @@
-import ChevronRightCircleIcon from "@components/icons/ChevronRightCircleIcon";
-import ListItem from "@components/ListItem";
-import LoadMoreItem from "@components/LoadMoreItem";
 import { useCallback, Fragment, useState, memo, useEffect } from "react";
 import {
   ActivityIndicator,
@@ -11,10 +8,16 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import Colors from "@helpers/colors";
-import { LaunchesPastResult, LaunchType } from "@components/typedef/LaunchType";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { Routes } from "@components/typedef/Routes";
+
+import { Routes } from "@typedef/Routes";
+import { LaunchesPastResult, LaunchType } from "@typedef/LaunchType";
+
+import Colors from "@helpers/colors";
+
+import ChevronRightCircleIcon from "@components/icons/ChevronRightCircleIcon";
+import ListItem from "@components/ListItem";
+import LoadMoreItem from "@components/LoadMoreItem";
 
 const windowDimensions = Dimensions.get("window");
 

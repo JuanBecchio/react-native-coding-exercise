@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment } from "react";
 import {
   StatusBar,
   Image,
@@ -7,8 +7,6 @@ import {
   Text,
   Pressable,
 } from "react-native";
-import { GET_PAST_LAUNCHES } from "@helpers/queries";
-import { useQuery } from "@apollo/client";
 
 import Colors from "@helpers/colors";
 
@@ -16,8 +14,8 @@ import Button from "@components/Button";
 import RocketIcon from "@components/icons/RocketIcon";
 import ArrowDownIcon from "@components/icons/ArrowDownIcon";
 import FilterIcon from "@components/icons/FilterIcon";
-
-import styles from "./homeStyles";
+import ListItem from "@components/ListItem";
+import useHome from "./useHome";
 
 import Planet from "@assets/Planet.png";
 import Logo from "@assets/YouNeedMoreMars.png";
@@ -25,63 +23,29 @@ import Rocket from "@assets/Rocket.png";
 import Banner from "@assets/SpaceTours.png";
 import MissionsList from "./MissionList";
 
-import { LaunchesPastResult } from "@components/typedef/LaunchType";
-import ListItem from "@components/ListItem";
+import styles from "./homeStyles";
 
-type FiltersType = {
-  asc: boolean;
-  sort: "rocket_name" | "rocket_type" | "launch_year";
+type FilterItemType = {
+  label: string;
+  value: "launch_year" | "rocket_name" | "rocket_type";
 };
+const FILTER_ITEMS: FilterItemType[] = [
+  { label: "Rocket Name", value: "rocket_name" },
+  { label: "Rocket Type", value: "rocket_type" },
+  { label: "Launch Year", value: "launch_year" },
+];
 
 const Home = () => {
-  const [filters, setFilters] = useState<FiltersType>({
-    asc: true,
-    sort: "launch_year",
-  });
-  const missionSearchRef = useRef<string>("");
-  const [showSortList, setShowSortList] = useState(false);
-
-  const { loading, data, fetchMore, refetch, client } =
-    useQuery<LaunchesPastResult>(GET_PAST_LAUNCHES, {
-      variables: {
-        limit: 6,
-        offset: 0,
-        order: "asc",
-        sort: "launch_year",
-        mission_search: "",
-      },
-      notifyOnNetworkStatusChange: true,
-    });
-
-  const handleFetchMore = () =>
-    fetchMore({
-      variables: { offset: data?.launchesPastResult?.data.length },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
-        if (!fetchMoreResult) {
-          return previousResult;
-        }
-
-        const previousLaunches = previousResult.launchesPastResult;
-        const fetchMoreLaunches = fetchMoreResult.launchesPastResult;
-
-        fetchMoreResult.launchesPastResult.data = [
-          ...previousLaunches.data,
-          ...fetchMoreLaunches.data,
-        ];
-
-        return { ...fetchMoreResult };
-      },
-    });
-
-  const handleFilterChange = (newFilters: FiltersType) => {
-    client.cache.reset();
-    refetch({
-      order: newFilters.asc ? "asc" : "desc",
-      sort: newFilters.sort,
-      mission_search: missionSearchRef.current,
-    });
-    setFilters({ ...newFilters });
-  };
+  const {
+    loading,
+    data,
+    missionSearchRef,
+    filters,
+    showSortList,
+    setShowSortList,
+    handleFetchMore,
+    handleFilterChange,
+  } = useHome();
 
   return (
     <View style={styles.container}>
@@ -146,33 +110,29 @@ const Home = () => {
                   onPress={() => setShowSortList(false)}
                 />
                 <Pressable style={styles.sortPicker}>
-                  <ListItem
-                    text="Rocket Name"
-                    style={styles.sortPickerItem}
-                    textStyle={styles.sortPickerItemText}
-                    onPress={() => {
-                      handleFilterChange({ ...filters, sort: "rocket_name" });
-                      setShowSortList(false);
-                    }}
-                  />
-                  <ListItem
-                    text="Rocket Type"
-                    style={styles.sortPickerItem}
-                    textStyle={styles.sortPickerItemText}
-                    onPress={() => {
-                      handleFilterChange({ ...filters, sort: "rocket_type" });
-                      setShowSortList(false);
-                    }}
-                  />
-                  <ListItem
-                    text="Launch Year"
-                    style={styles.sortPickerItem}
-                    textStyle={styles.sortPickerItemText}
-                    onPress={() => {
-                      handleFilterChange({ ...filters, sort: "launch_year" });
-                      setShowSortList(false);
-                    }}
-                  />
+                  {FILTER_ITEMS.map((item, index) => {
+                    const isSelected = filters.sort === item.value;
+                    return (
+                      <ListItem
+                        key={`Item-${index}-${item.value}`}
+                        text={item.label}
+                        style={[
+                          styles.sortPickerItem,
+                          {
+                            backgroundColor: isSelected
+                              ? Colors.Gray
+                              : Colors.WhiteMilk,
+                          },
+                        ]}
+                        disabled={isSelected}
+                        textStyle={styles.sortPickerItemText}
+                        onPress={() => {
+                          handleFilterChange({ ...filters, sort: item.value });
+                          setShowSortList(false);
+                        }}
+                      />
+                    );
+                  })}
                 </Pressable>
               </Fragment>
             )}
